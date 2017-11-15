@@ -1,0 +1,15 @@
+{
+  "fitbit": {
+    "appUUID": "6666c36f-939e-47fa-8e1c-e1207cb507e6",
+    "appType": "app",
+    "appDisplayName": "FlashLight",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#607d8b",
+    "requestedPermissions": [],
+    "i18n": {
+      "en": {
+        "name": "FlashLight"
+      }
+    }
+  }
+}
