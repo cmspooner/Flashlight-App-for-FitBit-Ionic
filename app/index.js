@@ -6,6 +6,9 @@ import { display } from "display";
 
 let background = document.getElementById("background");
 let toggle = true;
+background.style.fill = "white";
+display.brightnessOverride = 1.0;
+display.autoOff = false;
 
 background.onclick = function(evt) {
   console.log("Click");
@@ -22,11 +25,6 @@ background.onclick = function(evt) {
   }
   console.log("Toggle is " + toggle);
 }
-
-toggle = true;
-background.style.fill = "white";
-display.brightnessOverride = 1.0;
-display.autoOff = false;
 
 display.poke(); 
 
