@@ -10,3 +10,13 @@
   height: 100%;
   fill: white;
 }
+
+#sosLabel {
+  font-size: 10;
+  font-family: Colfax-Light;
+  text-length: 50;
+  text-anchor: end;
+  x: 98%;
+  y: 20%;
+  fill: black;
+}

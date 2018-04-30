@@ -1,3 +1,4 @@
 <svg>
   <rect id="background" pointer-events="visible"/>
+  <text id="sosLabel" />
 </svg>
