@@ -18,7 +18,7 @@ function mySettings(props) {
           <TextImageRow
             label="Email"
             sublabel="cmspooner@gmail.com"
-            icon="https://github.com/cmspoonerFlashlight-App-for-FitBit-Ionic/blob/master/resources/icons/settings/Email.png?raw=true"
+            icon="https://github.com/cmspooner/Flashlight-App-for-FitBit-Ionic/blob/master/resources/icons/settings/Email.png?raw=true"
           />
         </Link>
         <Link source="https://github.com/cmspooner">
