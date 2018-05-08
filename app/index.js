@@ -96,7 +96,6 @@ function doMorse(code){
 
 function checkSOS(){
   if (sosEnable){
-    console.log("SOS")
     sosText.text = "S.O.S."
     if (sos){
       sosText.text = "";
@@ -122,7 +121,6 @@ function checkSOS(){
       }
     }
   } else {
-    console.log("NO SOS")
     sosText.text = ""
   }
   
