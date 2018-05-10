@@ -2,10 +2,30 @@ function mySettings(props) {
   return (
     <Page>
       <Section 
-        title={<Text bold align="center">SOS</Text>}>
+        title={<Text bold align="center">SOS & Strobe</Text>}>
          <Toggle
            settingsKey="sosToggle"
            label="SOS Button"
+         />
+         <Text>SOS Interval (ms): {props.settingsStorage.getItem('sos')}</Text>
+         <Slider
+           settingsKey="sosSlider"
+           min="100"
+           max="500"
+           step="10"
+           onChange={value => props.settingsStorage.setItem('sos', value)}
+         />
+         <Toggle
+           settingsKey="strobeToggle"
+           label="Strobe Button"
+         />
+         <Text>Strobe Delay (ms): {props.settingsStorage.getItem('strobe')}</Text>
+         <Slider
+           settingsKey="strobeSlider"
+           min="10"
+           max="500"
+           step="10"
+           onChange={value => props.settingsStorage.setItem('strobe', value)}
          />
       </Section>
    
@@ -38,6 +58,21 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          3.3.3: lowered Strobe Button
+        </Text>
+        <Text>
+          3.3.2: Fixed settings
+        </Text>
+        <Text>
+          3.3.1: Strobe!
+        </Text>
+        <Text>
+          3.3: Adding Strobe
+        </Text>
+        <Text>
+          3.2.1: Settings fix
+        </Text>
         <Text>
           3.2: Settings
         </Text>

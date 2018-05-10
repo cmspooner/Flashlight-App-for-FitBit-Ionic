@@ -13,12 +13,19 @@ const SETTINGS_FILE = "settings.cbor";
 
 let background = document.getElementById("background");
 let sosText = document.getElementById("sosLabel");
+let strobeText = document.getElementById("strobeLabel");
 
 let toggle = true;
 let sos = false;
-let timeInterval = "250"
+let sosInterval = "250"
 let sosEnable = false;
+let strobe = false;
+let strobeInterval = "100"
+let strobeEnable = false;
 
+
+let on = [1];
+let off = [0];
 let s = [1,0,1,0,1,0,0,0];
 let o = [1,1,1,0,1,1,1,0,1,1,1,0,0,0];
 let space = [0,0,0,0,0,0,0];
@@ -26,17 +33,33 @@ let space = [0,0,0,0,0,0,0];
 let sosMsg = s.concat(o).concat(s).concat(space);
 console.log(sosMsg);
 
+let strobeMsg = on.concat(off);
+
 var wait = false;
 var morse;
+var mode;
 
 let settings = loadSettings();
 
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
   if (evt.data.key === "sosToggle" && evt.data.newValue) {
-    sosEnable = JSON.parse(evt.data.newValue);
-    console.log("SOS is: " + sosEnable);
+    settings.sos = JSON.parse(evt.data.newValue);
+    console.log("SOS is: " + settings.sos);
   }
+  if (evt.data.key === "sosSlider" && evt.data.newValue) {
+    settings.sosInterval = JSON.parse(evt.data.newValue);
+    console.log("SOS Interval is: " + settings.sosInterval);
+  }
+  if (evt.data.key === "strobeToggle" && evt.data.newValue) {
+    settings.strobe = JSON.parse(evt.data.newValue);
+    console.log("Strobe is: " + settings.strobe);
+  }
+  if (evt.data.key === "strobeSlider" && evt.data.newValue) {
+    settings.strobeInterval = JSON.parse(evt.data.newValue);
+    console.log("Strobe Inteval is: " + settings.strobeInterval);
+  }
+  applySettings();
 }
 
 
@@ -46,7 +69,7 @@ display.autoOff = false;
 
 background.onclick = function(evt) {
   console.log("Click");
-  if (!sos){
+  if (!sos && !strobe){
     if (toggle){
       toggle = false;
       background.style.fill = "gray";
@@ -63,7 +86,7 @@ background.onclick = function(evt) {
 }
 
 document.onkeypress = function(evt) {
-  if (sosEnable){
+  if (sosEnable && !strobe){
     if (evt.key == "up"){
       if (sos){
         sos = false;
@@ -74,10 +97,22 @@ document.onkeypress = function(evt) {
   } else {
     sos = false;
   }
+  if (strobeEnable && !sos){
+    if (evt.key == "down"){
+      if (strobe){
+        strobe = false;
+      } else {
+        strobe = true;
+      }
+    }
+  } else {
+    strobe = false;
+  }
 }
 
-function doMorse(code){
+function doMorse(code, timeInterval){
   let index = 0;
+  console.log(code + ", " + timeInterval)
   morse = setInterval(function(){
     if (index < code.length){
       console.log(code[index])
@@ -94,45 +129,60 @@ function doMorse(code){
   }, timeInterval);
 }
 
-function checkSOS(){
-  if (sosEnable){
+function checkMode(){
+  if (sosEnable && !sos && !strobe)
     sosText.text = "S.O.S."
-    if (sos){
-      sosText.text = "";
-      if (!wait) {
-        console.log("Doing SOS");
-        wait = true;
-        doMorse(sosMsg);
-      }
-    } else {
-      clearInterval(morse);
-      wait = false;
-      sosText.text = "S.O.S.";
-      if (!toggle){
-        toggle = false;
-        background.style.fill = "gray";
-        display.brightnessOverride = undefined;
-        display.autoOff = true;
-      } else{
-        toggle = true;
-        background.style.fill = "white";
-        display.brightnessOverride = 1.0;
-        display.autoOff = false;
-      }
+  else
+    sosText.text = ""
+  
+  if (strobeEnable && !strobe && !sos)
+    strobeText.text = "Strobe"
+  else 
+    strobeText.text = ""
+  
+  if (sos){
+    if (!wait) {
+      console.log("Doing SOS");
+      wait = true;
+      doMorse(sosMsg, sosInterval);
+    }
+  } else if (strobe){
+    if (!wait) {
+      console.log("Doing Strobe");
+      wait = true;
+      doMorse(strobeMsg, strobeInterval);
     }
   } else {
-    sosText.text = ""
+    clearInterval(morse);
+    wait = false;
   }
   
+  if (!sos && !strobe){
+    if (!toggle){
+      toggle = false;
+      background.style.fill = "gray";
+      display.brightnessOverride = undefined;
+      display.autoOff = true;
+    } else{
+      toggle = true;
+      background.style.fill = "white";
+      display.brightnessOverride = 1.0;
+      display.autoOff = false;
+    }
+  }
 }
 
 applySettings(settings);
 
 me.onunload = saveSettings;
 
-function applySettings(settings){
-  sosEnable = settings.sos
+function applySettings(){
+  sosEnable = settings.sos;
+  sosInterval = settings.sosInterval;
+  strobeEnable = settings.strobe;
+  strobeInterval = settings.strobeInterval;
 }
+  
 
 function loadSettings() {
   try {
@@ -141,6 +191,9 @@ function loadSettings() {
     // Defaults
     return {
       sos : 'false',
+      sosInterval : "250",
+      strobe : 'false',
+      strobeInterval : "100"
     }
   }
 }
@@ -149,5 +202,5 @@ function saveSettings() {
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }
 
-setInterval(checkSOS, 10);
+mode = setInterval(checkMode, 10);
 console.log("App Started");

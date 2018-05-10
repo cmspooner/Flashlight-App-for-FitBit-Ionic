@@ -16,7 +16,16 @@
   font-family: Colfax-Light;
   text-length: 50;
   text-anchor: end;
-  x: 98%;
+  x: 99%;
   y: 20%;
+  fill: black;
+}
+#strobeLabel {
+  font-size: 12;
+  font-family: Colfax-Light;
+  text-length: 50;
+  text-anchor: end;
+  x: 99%;
+  y: 90%;
   fill: black;
 }
