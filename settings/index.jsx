@@ -32,7 +32,7 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Contact Me</Text>}>
         <Text>
-          Please don't hesitiate to contact me with questions or suggestions. This and all my other apps will always be free and Open Source. If you really like my app please considder buying me a coffee (or more likely electonic components that end up in my classroom). Thanks!
+          Please don't hesitiate to contact me with questions or suggestions; but be sure to let me know which app or watchface you are talking about. This and all my other apps will always be free and Open Source. If you really like my app please considder buying me a coffee (or more likely electonic components that end up in my classroom). Thanks!
         </Text>
         <Link source="https://rawgit.com/cmspooner/Flashlight-App-for-FitBit-Ionic/master/settings/email.html">
           <TextImageRow
@@ -59,25 +59,10 @@ function mySettings(props) {
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
         <Text>
-          3.3.3: lowered Strobe Button
+          3.1: fixed small error
         </Text>
         <Text>
-          3.3.2: Fixed settings
-        </Text>
-        <Text>
-          3.3.1: Strobe!
-        </Text>
-        <Text>
-          3.3: Adding Strobe
-        </Text>
-        <Text>
-          3.2.1: Settings fix
-        </Text>
-        <Text>
-          3.2: Settings
-        </Text>
-        <Text>
-          3.0: SOS Button
+          3.0: SOS & Strobe Button
         </Text>
         <Text>
           2.0: Versa Compatible

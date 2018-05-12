@@ -201,6 +201,6 @@ function loadSettings() {
 function saveSettings() {
   fs.writeFileSync(SETTINGS_FILE, settings, SETTINGS_TYPE);
 }
-
+clearInterval()
 mode = setInterval(checkMode, 10);
 console.log("App Started");
