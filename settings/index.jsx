@@ -5,7 +5,7 @@ function mySettings(props) {
         title={<Text bold align="center">SOS & Strobe</Text>}>
          <Toggle
            settingsKey="sosToggle"
-           label="SOS Button"
+           label="SOS"
          />
          <Text>SOS Interval (ms): {props.settingsStorage.getItem('sos')}</Text>
          <Slider
@@ -17,7 +17,7 @@ function mySettings(props) {
          />
          <Toggle
            settingsKey="strobeToggle"
-           label="Strobe Button"
+           label="Strobe"
          />
          <Text>Strobe Delay (ms): {props.settingsStorage.getItem('strobe')}</Text>
          <Slider
@@ -27,6 +27,29 @@ function mySettings(props) {
            step="10"
            onChange={value => props.settingsStorage.setItem('strobe', value)}
          />
+      </Section>
+      
+      <Section 
+        title={<Text bold align="center">User Interface</Text>}>
+         <Toggle
+           settingsKey="showButtons"
+           label="Show Button Labels"
+         />
+        <Text>
+         Turning off buttons does not turn off the functionality, it just removes the text for a cleaner view.
+        </Text>
+         <Select
+          label="Controls"
+          settingsKey="controls"
+          options={[
+            {name:"Buttons"},
+            {name:"Swipe"},
+            {name:"Both"}
+          ]}
+          />
+        <Text>
+          When "Swipe" is turned on, you may swipe right to turn on SOS and left to turn on Strobe. Swiping either way in either mode will bring you back to the shome screen.
+        </Text>
       </Section>
    
       <Section
@@ -58,6 +81,21 @@ function mySettings(props) {
       </Section>
       <Section
         title={<Text bold align="center">Build Version and Notes</Text>}>
+        <Text>
+          4.3: Added Settings
+        </Text>
+        <Text>
+          4.2: Remove Swipe Text, change threshold, Add Strobe 
+        </Text>
+        <Text>
+          4.1: Remove Swipe Text, change threshold, Add Strobe 
+        </Text>
+        <Text>
+          4.0: Adding swipe to change mode.
+        </Text>
+        <Text>
+          3.2: fixed I hope?
+        </Text>
         <Text>
           3.1: fixed small error
         </Text>

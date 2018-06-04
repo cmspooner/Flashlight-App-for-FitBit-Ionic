@@ -38,8 +38,14 @@ let strobeMsg = on.concat(off);
 var wait = false;
 var morse;
 var mode;
+var showButtons = true;
+var controls = "Both"
 
 let settings = loadSettings();
+
+var y = 0;
+var x = 0;
+var swiptTheshold = 40
 
 messaging.peerSocket.onmessage = evt => {
   console.log(`App received: ${JSON.stringify(evt)}`);
@@ -59,7 +65,52 @@ messaging.peerSocket.onmessage = evt => {
     settings.strobeInterval = JSON.parse(evt.data.newValue);
     console.log("Strobe Inteval is: " + settings.strobeInterval);
   }
+  if (evt.data.key === "showButtons" && evt.data.newValue) {
+    settings.showButtons = JSON.parse(evt.data.newValue);
+    console.log("Show buttons is: " + settings.sos);
+  }
+  if (evt.data.key === "controls" && evt.data.newValue) {
+    settings.controls = JSON.parse(evt.data.newValue).values[0].name;
+    console.log("Controls are: " + settings.controls);
+  }
   applySettings();
+}
+
+background.onmousedown = function(evt) {
+  y = evt.screenY;
+  x = evt.screenX;
+}
+
+background.onmouseup = function(evt) {
+  if (controls == "Both" || controls == "Swipe"){
+    console.log("m up")
+    let yMove = evt.screenY-y;
+    let xMove = evt.screenX-x;
+    console.log(xMove + ", " + yMove);
+    if (xMove< -swiptTheshold) {//swipe left  };
+      console.log("Left");
+      if (strobeEnable && !sos){
+        if (strobe){
+          strobe = false;
+        } else {
+          strobe = true;
+        }
+      } else {
+        sos = false;
+      }
+    } else if (xMove> swiptTheshold) {//swipe right};
+      console.log("Right");
+      if (sosEnable && !strobe){
+        if (sos){
+          sos = false;
+        } else {
+          sos = true;
+        }
+      } else {
+        strobe = false;
+      }
+    }
+  }
 }
 
 
@@ -86,27 +137,39 @@ background.onclick = function(evt) {
 }
 
 document.onkeypress = function(evt) {
-  if (sosEnable && !strobe){
-    if (evt.key == "up"){
-      if (sos){
+  if (controls == "Both" || controls == "Buttons"){
+    evt.preventDefault();
+    if (sosEnable && !strobe){
+      if (evt.key == "up"){
+        if (sos){
+          sos = false;
+        } else {
+          sos = true;
+        }
+      }
+    } else {
+      sos = false;
+    }
+    if (strobeEnable && !sos){
+      if (evt.key == "down"){
+        if (strobe){
+          strobe = false;
+        } else {
+          strobe = true;
+        }
+      }
+    } else {
+      strobe = false;
+    }
+    if (evt.key == "back"){
+      if (sos || strobe){
         sos = false;
-      } else {
-        sos = true;
-      }
-    }
-  } else {
-    sos = false;
-  }
-  if (strobeEnable && !sos){
-    if (evt.key == "down"){
-      if (strobe){
         strobe = false;
-      } else {
-        strobe = true;
+      }
+      else{
+        me.exit();
       }
     }
-  } else {
-    strobe = false;
   }
 }
 
@@ -130,12 +193,12 @@ function doMorse(code, timeInterval){
 }
 
 function checkMode(){
-  if (sosEnable && !sos && !strobe)
+  if (sosEnable && !sos && !strobe && showButtons && (controls == "Both" || controls == "Buttons"))
     sosText.text = "S.O.S."
   else
     sosText.text = ""
   
-  if (strobeEnable && !strobe && !sos)
+  if (strobeEnable && !strobe && !sos && showButtons&& (controls == "Both" || controls == "Buttons"))
     strobeText.text = "Strobe"
   else 
     strobeText.text = ""
@@ -181,6 +244,8 @@ function applySettings(){
   sosInterval = settings.sosInterval;
   strobeEnable = settings.strobe;
   strobeInterval = settings.strobeInterval;
+  showButtons = settings.showButtons;
+  controls = settings.controls;
 }
   
 
@@ -193,7 +258,9 @@ function loadSettings() {
       sos : 'false',
       sosInterval : "250",
       strobe : 'false',
-      strobeInterval : "100"
+      strobeInterval : "100",
+      showButtons : 'true',
+      controls : "Both"
     }
   }
 }

@@ -29,3 +29,12 @@
   y: 90%;
   fill: black;
 }
+#testLabel {
+  font-size: 25;
+  font-family: Colfax-Light;
+  text-length: 50;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%;
+  fill: black;
+}

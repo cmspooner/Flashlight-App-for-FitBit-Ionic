@@ -2,4 +2,5 @@
   <rect id="background" pointer-events="visible"/>
   <text id="sosLabel" />
   <text id="strobeLabel" />
+  <text id="testLabel" />
 </svg>
